@@ -92,11 +92,11 @@ final class FocusModeControllerTests: XCTestCase {
         XCTAssertEqual(converted, CGRect(x: 100, y: 860, width: 300, height: 200))
     }
 
-    func testFallbackFocusedWindowFrameSelectsLargestFrontmostLayerZeroWindow() {
+    func testFallbackFocusedWindowFrameSelectsFirstFrontmostLayerZeroWindow() {
         let provider = AccessibilityFocusedWindowProvider()
         let info: [[String: Any]] = [
-            windowInfo(pid: 100, layer: 0, frame: CGRect(x: 10, y: 20, width: 400, height: 300)),
-            windowInfo(pid: 100, layer: 0, frame: CGRect(x: 30, y: 40, width: 200, height: 100)),
+            windowInfo(pid: 100, layer: 0, frame: CGRect(x: 10, y: 20, width: 200, height: 100)),
+            windowInfo(pid: 100, layer: 0, frame: CGRect(x: 30, y: 40, width: 600, height: 400)),
             windowInfo(pid: 200, layer: 0, frame: CGRect(x: 0, y: 0, width: 900, height: 700)),
         ]
 
@@ -106,7 +106,7 @@ final class FocusModeControllerTests: XCTestCase {
             virtualDesktopMaxY: 1200
         )
 
-        XCTAssertEqual(frame, CGRect(x: 10, y: 880, width: 400, height: 300))
+        XCTAssertEqual(frame, CGRect(x: 10, y: 1080, width: 200, height: 100))
     }
 
     func testFallbackFocusedWindowFrameIgnoresNonZeroLayerWindows() {

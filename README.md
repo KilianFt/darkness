@@ -1,12 +1,15 @@
 # Darkness
 
-Darkness is a macOS menu-bar app for quick display blackouts and focus mode.
+Darkness is a macOS menu-bar app for quick display blackouts and single window focus mode.
+
+![Darkness](./preview.png)
+
 
 ## What It Does
 
+- Focus mode: keep only the currently focused window visible and darken everything else.
 - Black out one **external display** at a time (toggle on/off).
 - Cycle which external display is selected.
-- Focus mode: keep only the currently focused window visible and darken everything else.
 
 ## Hotkeys
 

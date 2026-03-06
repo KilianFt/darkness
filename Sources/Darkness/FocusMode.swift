@@ -240,7 +240,7 @@ final class AccessibilityFocusedWindowProvider: FocusedWindowProviding {
         frontmostPID: pid_t,
         virtualDesktopMaxY: CGFloat
     ) -> CGRect? {
-        let candidates = windowInfo.compactMap { entry -> CGRect? in
+        for entry in windowInfo {
             guard let ownerPID = (entry[kCGWindowOwnerPID as String] as? NSNumber)?.int32Value,
                   ownerPID == frontmostPID,
                   let layer = (entry[kCGWindowLayer as String] as? NSNumber)?.intValue,
@@ -249,19 +249,16 @@ final class AccessibilityFocusedWindowProvider: FocusedWindowProviding {
                   let frame = CGRect(dictionaryRepresentation: bounds as CFDictionary),
                   !frame.isNull,
                   !frame.isEmpty else {
-                return nil
+                continue
             }
-            return frame
+            // CGWindowList is ordered front-to-back, so first valid window is the focused/frontmost one.
+            return convertFromTopLeftToBottomLeft(
+                frame,
+                virtualDesktopMaxY: virtualDesktopMaxY
+            )
         }
 
-        guard let topLeftFrame = candidates.max(by: { $0.area < $1.area }) else {
-            return nil
-        }
-
-        return convertFromTopLeftToBottomLeft(
-            topLeftFrame,
-            virtualDesktopMaxY: virtualDesktopMaxY
-        )
+        return nil
     }
 }
 
